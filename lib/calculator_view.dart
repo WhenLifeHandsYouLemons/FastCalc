@@ -37,7 +37,7 @@ class _CalculatorViewState extends State<CalculatorView> {
         if (equation == "") {
           equation = "0";
         }
-      } else if (buttonText == "+/-") {
+      } else if (buttonText == "±") {
         if (equation[0] != '-') {
           equation = '-$equation';
         } else {
@@ -196,7 +196,7 @@ class _CalculatorViewState extends State<CalculatorView> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           calcButton('±', Colors.white24,
-                              () => buttonPressed('+/-')),
+                              () => buttonPressed('±')),
                           SizedBox(
                               width: MediaQuery.of(context).size.width * 0.04),
                           calcButton(
