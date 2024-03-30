@@ -123,7 +123,9 @@ class _CalculatorViewState extends State<CalculatorView> {
             Padding(
               padding: const EdgeInsets.only(top: 18.0),
               child: calcButtonText(angleMode, 18, () => changeAngleMode(),
-                  buttonColor : CustomColors.black, textColor: Colors.grey[700], context : context),
+                  buttonColor: CustomColors.black,
+                  textColor: Colors.grey[700],
+                  context: context),
               // child: Text('DEG', style: TextStyle(color: Colors.white38)),
             ),
             const SizedBox(width: 20),
@@ -175,6 +177,9 @@ class _CalculatorViewState extends State<CalculatorView> {
                       ]),
                 ),
               ),
+
+// Past this is the calculator buttons
+
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 SizedBox(width: innerPaddingAmount),
                 Column(children: [
