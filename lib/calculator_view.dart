@@ -155,16 +155,10 @@ class _CalculatorViewState extends State<CalculatorView> {
                           ],
                         ),
                         Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            textDirection: TextDirection.rtl,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Text(equation,
-                                    style: const TextStyle(
-                                      fontSize: 40,
-                                      color: Colors.white38,
-                                    )),
-                              ),
+                              SizedBox(width: innerPaddingAmount),
                               calcButtonSpecial(
                                   const Icon(Icons.backspace_outlined,
                                       color: Colors.blue, size: 30),
@@ -173,6 +167,14 @@ class _CalculatorViewState extends State<CalculatorView> {
                                   () => buttonPressed('⌫'),
                                   context: context),
                               SizedBox(width: innerPaddingAmount),
+                              Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Text(equation,
+                                    style: const TextStyle(
+                                      fontSize: 40,
+                                      color: Colors.white38,
+                                    )),
+                              ),
                             ])
                       ]),
                 ),
