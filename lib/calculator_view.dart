@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
 
 class CalculatorView extends StatefulWidget {
-  const CalculatorView({Key? key}) : super(key: key);
+  const CalculatorView({super.key});
 
   @override
   State<CalculatorView> createState() => _CalculatorViewState();
@@ -23,7 +23,7 @@ class _CalculatorViewState extends State<CalculatorView> {
   String clearButton = "AC";
   String angleMode = "DEG";
 
-  changeAngleMode() {
+  void changeAngleMode() {
     setState(() {
       if (angleMode == "DEG") {
         angleMode = "RAD";
@@ -33,7 +33,7 @@ class _CalculatorViewState extends State<CalculatorView> {
     });
   }
 
-  buttonPressed(String buttonText) {
+  void buttonPressed(String buttonText) {
     // used to check if the result contains a decimal
     String doesContainDecimal(dynamic result) {
       if (result.toString().contains('.')) {
@@ -114,195 +114,281 @@ class _CalculatorViewState extends State<CalculatorView> {
     double innerPaddingAmount = MediaQuery.of(context).size.width * 0.04;
 
     return Scaffold(
+      backgroundColor: Colors.black54,
+      appBar: AppBar(
+        elevation: 0,
         backgroundColor: Colors.black54,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.black54,
-          // leading: const Icon(Icons.settings, color: Colors.blue),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(top: 18.0),
-              child: calcButtonText(angleMode, 18, () => changeAngleMode(),
-                  buttonColor: CustomColors.black,
-                  textColor: Colors.grey[700],
-                  context: context),
-              // child: Text('DEG', style: TextStyle(color: Colors.white38)),
+        // leading: const Icon(Icons.settings, color: Colors.blue),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(top: 18.0),
+            child: calcButtonText(
+              angleMode,
+              18,
+              () => changeAngleMode(),
+              buttonColor: CustomColors.black,
+              textColor: Colors.grey[700],
+              context: context,
             ),
-            const SizedBox(width: 20),
-          ],
-        ),
-        body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Align(
-                alignment: Alignment.bottomRight,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                                padding: const EdgeInsets.all(1),
-                                child: Text(result,
-                                    textAlign: TextAlign.left,
-                                    style: const TextStyle(
-                                        color: Colors.white, fontSize: 80))),
-                            SizedBox(width: innerPaddingAmount),
-                          ],
-                        ),
-                        Row(
-                            textDirection: TextDirection.rtl,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              SizedBox(width: innerPaddingAmount),
-                              calcButtonSpecial(
-                                  const Icon(Icons.backspace_outlined,
-                                      color: Colors.blue, size: 30),
-                                  CustomColors.black,
-                                  40,
-                                  () => buttonPressed('⌫'),
-                                  context: context),
-                              SizedBox(width: innerPaddingAmount),
-                              Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Text(equation,
-                                    style: const TextStyle(
-                                      fontSize: 40,
-                                      color: Colors.white38,
-                                    )),
+            // child: Text('DEG', style: TextStyle(color: Colors.white38)),
+          ),
+          const SizedBox(width: 20),
+        ],
+      ),
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(1),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            reverse: true,
+                            child: Text(
+                              result,
+                              textAlign: TextAlign.left,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 80,
                               ),
-                            ])
-                      ]),
-                ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: innerPaddingAmount),
+                    ],
+                  ),
+                  Row(
+                    textDirection: TextDirection.rtl,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(width: innerPaddingAmount),
+                      // Clear button moved to right of backspace
+                      calcButtonText(
+                        clearButton,
+                        30,
+                        () => buttonPressed('AC'),
+                        buttonColor: Colors.blue,
+                        context: context,
+                      ),
+                      SizedBox(width: innerPaddingAmount),
+                      // Backspace button
+                      calcButtonSpecial(
+                        const Icon(
+                          Icons.backspace_outlined,
+                          color: Colors.blue,
+                          size: 30,
+                        ),
+                        CustomColors.black,
+                        40,
+                        () => buttonPressed('⌫'),
+                        context: context,
+                      ),
+                      SizedBox(width: innerPaddingAmount),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            reverse: true,
+                            child: Text(
+                              equation,
+                              style: const TextStyle(
+                                fontSize: 40,
+                                color: Colors.white38,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
+            ),
 
-// Past this is the calculator buttons
-
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            // Calculator buttons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
                 SizedBox(width: innerPaddingAmount),
-                Column(children: [
-                  Row(children: [
-                    calcButtonText(clearButton, 30, () => buttonPressed('AC'),
-                        buttonColor: Colors.blue, context: context),
-                    SizedBox(width: innerPaddingAmount),
-                    calcButtonSymbol(const Icon(CupertinoIcons.percent),
-                        () => buttonPressed('%'),
-                        context: context),
-                    SizedBox(width: innerPaddingAmount),
-                    calcButtonSymbol(const Icon(CupertinoIcons.divide),
-                        () => buttonPressed('÷'),
-                        context: context),
-                  ]),
-                ]),
+                calcButtonText(
+                  '(',
+                  30,
+                  () => buttonPressed('('),
+                  context: context,
+                ),
                 SizedBox(width: innerPaddingAmount),
-                calcButtonSymbol(const Icon(CupertinoIcons.multiply),
-                    () => buttonPressed('×'),
-                    context: context),
-                SizedBox(width: innerPaddingAmount),
-              ]),
-              const SizedBox(height: 10),
-
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                SizedBox(width: innerPaddingAmount),
-                Column(children: [
-                  Row(children: [
-                    calcButtonText('7', 30, () => buttonPressed('7'),
-                        context: context),
-                    SizedBox(width: innerPaddingAmount),
-                    calcButtonText('8', 30, () => buttonPressed('8'),
-                        context: context),
-                    SizedBox(width: innerPaddingAmount),
-                    calcButtonText('9', 30, () => buttonPressed('9'),
-                        context: context),
-                  ]),
-                ]),
+                calcButtonText(
+                  ')',
+                  30,
+                  () => buttonPressed(')'),
+                  context: context,
+                ),
                 SizedBox(width: innerPaddingAmount),
                 calcButtonSymbol(
-                    const Icon(CupertinoIcons.minus), () => buttonPressed('-'),
-                    context: context),
+                  const Icon(CupertinoIcons.percent),
+                  () => buttonPressed('%'),
+                  context: context,
+                ),
                 SizedBox(width: innerPaddingAmount),
-              ]),
-              const SizedBox(height: 10),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(width: innerPaddingAmount),
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          calcButtonText('4', 30, () => buttonPressed('4'),
-                              context: context),
-                          SizedBox(width: innerPaddingAmount),
-                          calcButtonText('5', 30, () => buttonPressed('5'),
-                              context: context),
-                          SizedBox(width: innerPaddingAmount),
-                          calcButtonText('6', 30, () => buttonPressed('6'),
-                              context: context),
-                        ],
-                      )
-                    ],
-                  ),
-                  SizedBox(width: innerPaddingAmount),
-                  calcButtonSymbol(
-                      const Icon(CupertinoIcons.add), () => buttonPressed('+'),
-                      context: context),
-                  SizedBox(width: innerPaddingAmount),
-                ],
-              ),
-              const SizedBox(height: 10),
-              // calculator number buttons
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(width: innerPaddingAmount),
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          calcButtonText('1', 30, () => buttonPressed('1'),
-                              context: context),
-                          SizedBox(width: innerPaddingAmount),
-                          calcButtonText('2', 30, () => buttonPressed('2'),
-                              context: context),
-                          SizedBox(width: innerPaddingAmount),
-                          calcButtonText('3', 30, () => buttonPressed('3'),
-                              context: context),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          calcButtonSymbol(const Icon(CupertinoIcons.plusminus),
-                              () => buttonPressed('±'),
-                              context: context),
-                          SizedBox(width: innerPaddingAmount),
-                          calcButtonText('0', 30, () => buttonPressed('0'),
-                              context: context),
-                          SizedBox(width: innerPaddingAmount),
-                          calcButtonText('.', 30, () => buttonPressed('.'),
-                              context: context),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(width: innerPaddingAmount),
-                  calcButtonSymbol(const Icon(CupertinoIcons.equal),
-                      () => buttonPressed('='),
-                      important: true, context: context),
-                  SizedBox(width: innerPaddingAmount),
-                ],
-              ),
-              const SizedBox(height: 15),
-            ],
-          ),
-        ));
+                calcButtonSymbol(
+                  const Icon(CupertinoIcons.divide),
+                  () => buttonPressed('÷'),
+                  context: context,
+                ),
+                SizedBox(width: innerPaddingAmount),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(width: innerPaddingAmount),
+                calcButtonText(
+                  '7',
+                  30,
+                  () => buttonPressed('7'),
+                  context: context,
+                ),
+                SizedBox(width: innerPaddingAmount),
+                calcButtonText(
+                  '8',
+                  30,
+                  () => buttonPressed('8'),
+                  context: context,
+                ),
+                SizedBox(width: innerPaddingAmount),
+                calcButtonText(
+                  '9',
+                  30,
+                  () => buttonPressed('9'),
+                  context: context,
+                ),
+                SizedBox(width: innerPaddingAmount),
+                calcButtonSymbol(
+                  const Icon(CupertinoIcons.multiply),
+                  () => buttonPressed('×'),
+                  context: context,
+                ),
+                SizedBox(width: innerPaddingAmount),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(width: innerPaddingAmount),
+                calcButtonText(
+                  '4',
+                  30,
+                  () => buttonPressed('4'),
+                  context: context,
+                ),
+                SizedBox(width: innerPaddingAmount),
+                calcButtonText(
+                  '5',
+                  30,
+                  () => buttonPressed('5'),
+                  context: context,
+                ),
+                SizedBox(width: innerPaddingAmount),
+                calcButtonText(
+                  '6',
+                  30,
+                  () => buttonPressed('6'),
+                  context: context,
+                ),
+                SizedBox(width: innerPaddingAmount),
+                calcButtonSymbol(
+                  const Icon(CupertinoIcons.minus),
+                  () => buttonPressed('-'),
+                  context: context,
+                ),
+                SizedBox(width: innerPaddingAmount),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(width: innerPaddingAmount),
+                calcButtonText(
+                  '1',
+                  30,
+                  () => buttonPressed('1'),
+                  context: context,
+                ),
+                SizedBox(width: innerPaddingAmount),
+                calcButtonText(
+                  '2',
+                  30,
+                  () => buttonPressed('2'),
+                  context: context,
+                ),
+                SizedBox(width: innerPaddingAmount),
+                calcButtonText(
+                  '3',
+                  30,
+                  () => buttonPressed('3'),
+                  context: context,
+                ),
+                SizedBox(width: innerPaddingAmount),
+                calcButtonSymbol(
+                  const Icon(CupertinoIcons.add),
+                  () => buttonPressed('+'),
+                  context: context,
+                ),
+                SizedBox(width: innerPaddingAmount),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(width: innerPaddingAmount),
+                calcButtonSymbol(
+                  const Icon(CupertinoIcons.plusminus),
+                  () => buttonPressed('±'),
+                  context: context,
+                ),
+                SizedBox(width: innerPaddingAmount),
+                calcButtonText(
+                  '0',
+                  30,
+                  () => buttonPressed('0'),
+                  context: context,
+                ),
+                SizedBox(width: innerPaddingAmount),
+                calcButtonText(
+                  '.',
+                  30,
+                  () => buttonPressed('.'),
+                  context: context,
+                ),
+                SizedBox(width: innerPaddingAmount),
+                calcButtonSymbol(
+                  const Icon(CupertinoIcons.equal),
+                  () => buttonPressed('='),
+                  important: true,
+                  context: context,
+                ),
+                SizedBox(width: innerPaddingAmount),
+              ],
+            ),
+            const SizedBox(height: 15),
+          ],
+        ),
+      ),
+    );
   }
 }
