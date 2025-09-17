@@ -1,4 +1,4 @@
-package com.example.fast_calc
+package com.soorajdev.fast_calc
 
 import io.flutter.embedding.android.FlutterActivity
 
